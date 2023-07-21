@@ -5,8 +5,11 @@ import Header from './Header';
 const Layout = ({ children }:any) => {
   return (
     <div>
+      <div>
       <Header />
-      <div>{children}</div>
+      </div>
+<div className="min-h-screen">{children}</div>
+
       <Footer/>
     </div>
   );

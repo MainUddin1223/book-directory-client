@@ -1,61 +1,62 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useState, useEffect, useMemo } from 'react'
 
-import { loginApi } from '../redux/features/auth/authSlice'
+import { registerApi } from '../redux/features/auth/authSlice'
 import { Link, useNavigate } from 'react-router-dom'
 import Layout from '@/layout/Layout'
 import Swal from 'sweetalert2'
 import Loader from '@/components/loader'
 
+const Register = () => {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const [isValidData, setIsValidData] = useState(false)
+  const { auth, isLoading, isError } = useAppSelector((state) => state.auth)
 
-const Login = () => {
-const { auth, isLoading, isError } = useAppSelector((state) => state.auth)
-const navigate = useNavigate()
-const dispatch = useAppDispatch()
-
-  const [authData, setAuthData] = useState({
+  const [registerData, setRegisterData] = useState({
     email: '',
     password: '',
   })
-const handleLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
-  event.preventDefault()
-  const response = await dispatch(
-    loginApi({ email: authData.email, password: authData.password })
-  )
-if(!isLoading){
-  if(response?.payload?.success == false || isError){
-    Swal.fire({
-      icon: 'error',
-      title: response.payload.message??'Oops'
-    })
-  }
-    if(response?.payload?.success){
-      localStorage.setItem('token',response?.payload?.token)
-      Swal.fire({
-        icon: 'success',
-        title: 'Login Successfull',
-        showConfirmButton: false,
-        timer: 1500
+
+  const handleRegister = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    const response = await dispatch(
+      registerApi({
+        email: registerData.email,
+        password: registerData.password,
       })
-      navigate('/')
+    )
+    if (!isLoading) {
+      if (response?.payload?.success == false || isError) {
+        Swal.fire({
+          icon: 'error',
+          title: response.payload.message ?? 'Oops',
+        })
+      }
+      if (response?.payload?.success) {
+        localStorage.setItem('token', response?.payload?.token)
+        Swal.fire({
+          icon: 'success',
+          title: 'Registration successfull',
+          showConfirmButton: false,
+          timer: 1500,
+        })
+        navigate('/')
+      }
+    }
   }
-}
-}
 
-const [isValidData, setIsValidData] = useState(false)
+  useMemo(() => {
+    if (registerData?.email && registerData?.password) {
+      setIsValidData(true)
+    } else {
+      setIsValidData(false)
+    }
+  }, [registerData])
 
-useMemo(() => {
-  if (authData?.email && authData?.password) {
-    setIsValidData(true)
-  } else {
-    setIsValidData(false)
+  if (isLoading) {
+    return <Loader />
   }
-}, [authData])
-
-
-if (isLoading) {
-  return <Loader />
-}
 
   return (
     <Layout>
@@ -63,7 +64,7 @@ if (isLoading) {
         <div className="w-full mx-auto md:mt-16 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
           <form className="space-y-6" action="#">
             <h5 className="text-xl font-medium text-gray-900 dark:text-white">
-              Sign in to Book directory
+              Register to Book directory
             </h5>
             <div>
               <div>
@@ -77,12 +78,12 @@ if (isLoading) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                   placeholder="name@company.com"
                   onChange={(event) => {
-                    setAuthData((prev) => ({
+                    setRegisterData((prev) => ({
                       ...prev,
                       email: event.target.value,
                     }))
                   }}
-                  value={authData.email??''}
+                  value={registerData.email ?? ''}
                   required
                 />
               </div>
@@ -101,12 +102,12 @@ if (isLoading) {
                 placeholder="••••••••"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                 onChange={(event) => {
-                  setAuthData((prev) => ({
+                  setRegisterData((prev) => ({
                     ...prev,
                     password: event.target.value,
                   }))
                 }}
-                value={authData.password??''}
+                value={registerData.password ?? ''}
                 required
               />
             </div>
@@ -128,16 +129,15 @@ if (isLoading) {
                   ? 'bg-gray-400'
                   : 'bg-gray-700 hover:bg-primary dark:bg-blue-600 dark:hover:bg-blue-700'
               }`}
-
               disabled={!isValidData && true}
-              onClick={(event) => handleLogin(event)}
+              onClick={(event) => handleRegister(event)}
             >
-              Login
+              register
             </button>
             <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
-              Not registered?{' '}
-              <Link to="/register" className="text-blue-500">
-                Create account
+              Already have an account?{' '}
+              <Link to="/login" className="text-blue-500">
+                Login
               </Link>
             </div>
           </form>
@@ -146,4 +146,4 @@ if (isLoading) {
     </Layout>
   )
 }
-export default Login
+export default Register

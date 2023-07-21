@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+const baseUrl = import.meta.env.VITE_BASE_URL
 
 export const api = createApi({
     reducerPath: 'api',
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080" }),
-    tagTypes: ['comments'],
+    baseQuery: fetchBaseQuery({ baseUrl }),
+    // tagTypes: ['comments'],
     endpoints: () => ({})
 })

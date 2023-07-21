@@ -1,31 +1,54 @@
-import { useState } from 'react';
+import { useAppSelector } from '@/redux/hooks'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { CgProfile } from 'react-icons/cg'
+
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const [isMenuOpen, setIsMenuOpen] = useState(false)
+const { auth } = useAppSelector((state) => state.auth)
+
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+    setIsMenuOpen(!isMenuOpen)
+  }
 
   return (
-    <header className="bg-gray-800">
-      <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <h1 className="text-white text-2xl font-bold">My Website</h1>
-
-        <nav className={`md:flex space-x-4 ${isMenuOpen ? 'block' : 'hidden'}`}>
-          <a href="#" className="text-white hover:text-gray-300">
-            Home
-          </a>
-          <a href="#" className="text-white hover:text-gray-300">
-            About
-          </a>
-          <a href="#" className="text-white hover:text-gray-300">
-            Services
-          </a>
-          <a href="#" className="text-white hover:text-gray-300">
-            Contact
-          </a>
-        </nav>
+    <header className="bg-primary sticky top-0 z-50 ">
+      <div className="  container mx-auto px-4 py-6 flex justify-between items-center">
+        <div className="uppercase text-white font-bold text-2xl cursor-pointer">
+          <Link to="/">Book Directory</Link>
+        </div>
+        <div>
+        </div>
+<div className=''>
+          {/* midum and large devices */}
+          <div className='text-white gap-4 font-semibold text-lg hidden md:flex'>
+          <Link to="/">Home</Link>
+          {
+            auth.email?<>
+             <Link to="/">Add a book</Link>
+             <Link to="/">
+                  <CgProfile className="text-2xl" />
+                </Link>
+            </>: <Link to="/login">Login</Link>
+          }
+        </div>
+        {/* small devices */}
+        <div className={`text-white gap-4 font-semibold text-lg flex flex-col absolute  top-20 bg-primary md:hidden ${isMenuOpen ? 'right-0' : 'hidden '} transition delay-200 duration-1000 linear p-4 text-center `}>
+        {
+          auth.email && <Link to="/">
+          <CgProfile className="text-3xl mx-auto" />
+        </Link>
+         }
+          <Link to="/">Home</Link>
+          {
+            auth.email?<>
+             <Link to="/">Add a book</Link>
+            </>: <Link to="/login">Login</Link>
+          }
+        </div>
+</div>
 
         <button
           className="md:hidden text-white hover:text-gray-300"
@@ -47,7 +70,8 @@ const Header = () => {
         </button>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
+

@@ -1,14 +1,16 @@
 import BookList from '@/components/BookList'
 import Hero from '@/components/Hero'
-import Intro from '@/components/Intro'
+import FeaturedAuthor from '@/components/Intro'
+import Featured from '@/components/featured'
+
 
 const Home = () => {
   return (
-    <>
-      <Hero />
-      <Intro />
+    <div>
+      <Hero /><Featured />
       <BookList />
-    </>
+      <FeaturedAuthor />
+    </div>
   )
 }
 export default Home

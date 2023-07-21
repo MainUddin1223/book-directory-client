@@ -1,4 +1,12 @@
+import { useGetBooksQuery } from '@/redux/features/book/bookApi'
+
 const BookList = () => {
+const { data, isLoading, error } = useGetBooksQuery({ page: 1 })
+if (isLoading) {
+  console.log('data is comming')
+}
+console.log(data, error)
+
   return (
     <>
       <div className="relative mx-auto w-full max-w-sm pt-6 bg-slate-400 p-2 rounded-md">
