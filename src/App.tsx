@@ -26,7 +26,7 @@ if (isLoading) {
 
   return (
     <>
- <div className='bg-background-color'>
+ <div className='bg-primary'>
  <Layout>
       <div className='lg:w-3/4 md:w-11/12 mx-auto'>
       <Home />

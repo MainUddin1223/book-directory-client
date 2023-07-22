@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { api } from "@/redux/api/apiSlice";
 // const token = localStorage.getItem('token')
 const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI1NGRhOTlhYjg4ZGJjOGMyMGJiOTciLCJlbWFpbCI6ImZpcnN0QGdtYWlsLmNvbSIsImlhdCI6MTY4OTYwMzQ5NywiZXhwIjoxNjg5Njg5ODk3fQ.n-ya5nE_dGNHKo1yENbp9D_uhk5ThEFeZ2y10O6GeLo'
@@ -18,7 +19,7 @@ const BookApi = api.injectEndpoints({
         getBooks: builder.query({
             query: (queries) => {
                 const filteredParams = Object.fromEntries(
-                    Object.entries(queries).filter(([key, value]) => value !== null)
+                    Object.entries(queries).filter(([key, value]) => { key && (value !== null) })
                 );
 
                 return {

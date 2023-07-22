@@ -11,6 +11,7 @@ export default {
         'secondary': 'var(--secondary-color)',
         'button-color': 'var(--button-coler)',
         'background-color': 'var(--bg-color)',
+        'heading-color':'var(--text-color)',
       },
     },
   },

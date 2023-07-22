@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
+
 
 import { loginApi } from '../redux/features/auth/authSlice'
 import { Link, useNavigate } from 'react-router-dom'
@@ -9,7 +10,8 @@ import Loader from '@/components/loader'
 
 
 const Login = () => {
-const { auth, isLoading, isError } = useAppSelector((state) => state.auth)
+const { isLoading, isError } = useAppSelector((state) => state.auth)
+
 const navigate = useNavigate()
 const dispatch = useAppDispatch()
 
@@ -59,8 +61,8 @@ if (isLoading) {
 
   return (
     <Layout>
-      <div className="">
-        <div className="w-full mx-auto md:mt-16 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+      <div className="bg-primary py-16">
+        <div className="w-full mx-auto max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6  dark:bg-gray-800 dark:border-gray-700">
           <form className="space-y-6" action="#">
             <h5 className="text-xl font-medium text-gray-900 dark:text-white">
               Sign in to Book directory

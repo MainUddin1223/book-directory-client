@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
+
 
 import { registerApi } from '../redux/features/auth/authSlice'
 import { Link, useNavigate } from 'react-router-dom'
@@ -11,7 +12,8 @@ const Register = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [isValidData, setIsValidData] = useState(false)
-  const { auth, isLoading, isError } = useAppSelector((state) => state.auth)
+const { isLoading, isError } = useAppSelector((state) => state.auth)
+
 
   const [registerData, setRegisterData] = useState({
     email: '',

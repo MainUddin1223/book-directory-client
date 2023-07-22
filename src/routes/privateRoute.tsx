@@ -1,3 +1,5 @@
+import Loader from '@/components/loader'
+
 import { useAppSelector } from '@/redux/hooks'
 import { ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
@@ -7,12 +9,15 @@ interface IProps {
 }
 
 const PrivateRoutes = ({ children }: IProps) => {
-  const { user, isLoading } = useAppSelector((state) => state.user)
+const { auth, isLoading } = useAppSelector((state) => state.auth) //state.user
+
   const { pathname } = useLocation()
+
   if (isLoading) {
-    return <p>Loading...</p>
+return <Loader />
+
   }
-  if (!user.email) {
+  if (!auth.email) {
     return <Navigate to="/login" state={{ path: pathname }} />
   }
   return children

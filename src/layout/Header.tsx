@@ -1,12 +1,24 @@
 import { useAppSelector } from '@/redux/hooks'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { CgProfile } from 'react-icons/cg'
+import { Link, useNavigate } from 'react-router-dom'
+import { MdOutlineLogout } from 'react-icons/md'
+import { useDispatch } from 'react-redux'
+import { setAuth } from '@/redux/features/auth/authSlice'
+
 
 
 const Header = () => {
 const [isMenuOpen, setIsMenuOpen] = useState(false)
 const { auth } = useAppSelector((state) => state.auth)
+const dispatch = useDispatch()
+const navigate = useNavigate()
+
+const handleLogout = () => {
+  dispatch(setAuth(''))
+  localStorage.clear()
+  navigate('/')
+}
+
 
 
   const toggleMenu = () => {
@@ -14,41 +26,48 @@ const { auth } = useAppSelector((state) => state.auth)
   }
 
   return (
-    <header className="bg-primary sticky top-0 z-50 ">
+    <header className="bg-background-color">
       <div className="  container mx-auto px-4 py-6 flex justify-between items-center">
         <div className="uppercase text-white font-bold text-2xl cursor-pointer">
           <Link to="/">Book Directory</Link>
         </div>
-        <div>
-        </div>
-<div className=''>
+        <div></div>
+        <div className="">
           {/* midum and large devices */}
-          <div className='text-white gap-4 font-semibold text-lg hidden md:flex'>
-          <Link to="/">Home</Link>
-          {
-            auth.email?<>
-             <Link to="/">Add a book</Link>
-             <Link to="/">
-                  <CgProfile className="text-2xl" />
-                </Link>
-            </>: <Link to="/login">Login</Link>
-          }
+          <div className="text-white gap-4 font-semibold text-lg hidden md:flex">
+            <Link to="/">Home</Link>
+            {auth.email ? (
+              <>
+                <Link to="/add-book">Add a book</Link>
+                <Link to="/">Wish List</Link>
+                <Link to="/">Reading</Link>
+                <div onClick={handleLogout} className=' bg-gray-400 p-2 rounded-full cursor-pointer'><MdOutlineLogout className="text-2xl" />
+
+                </div>
+              </>
+            ) : (
+              <Link to="/login">Login</Link>
+            )}
+          </div>
+          {/* small devices */}
+          <div
+            className={`text-white gap-4 font-semibold text-lg flex flex-col absolute  top-20 bg-primary md:hidden ${
+              isMenuOpen ? 'right-0' : 'hidden '
+            } transition delay-200 duration-1000 linear p-4 text-center `}
+          >
+            <Link to="/">Home</Link>
+
+            {auth.email ? (
+              <div>
+                <Link to="/">Add a book</Link>
+                <div onClick={handleLogout} className=' bg-gray-400 p-2 rounded-full cursor-pointer'><MdOutlineLogout className="text-2xl" />
+                </div>
+              </div>
+            ) : (
+              <Link to="/login">Login</Link>
+            )}
+          </div>
         </div>
-        {/* small devices */}
-        <div className={`text-white gap-4 font-semibold text-lg flex flex-col absolute  top-20 bg-primary md:hidden ${isMenuOpen ? 'right-0' : 'hidden '} transition delay-200 duration-1000 linear p-4 text-center `}>
-        {
-          auth.email && <Link to="/">
-          <CgProfile className="text-3xl mx-auto" />
-        </Link>
-         }
-          <Link to="/">Home</Link>
-          {
-            auth.email?<>
-             <Link to="/">Add a book</Link>
-            </>: <Link to="/login">Login</Link>
-          }
-        </div>
-</div>
 
         <button
           className="md:hidden text-white hover:text-gray-300"
@@ -74,4 +93,3 @@ const { auth } = useAppSelector((state) => state.auth)
 }
 
 export default Header
-
