@@ -1,21 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { api } from "@/redux/api/apiSlice";
-// const token = localStorage.getItem('token')
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI1NGRhOTlhYjg4ZGJjOGMyMGJiOTciLCJlbWFpbCI6ImZpcnN0QGdtYWlsLmNvbSIsImlhdCI6MTY4OTYwMzQ5NywiZXhwIjoxNjg5Njg5ODk3fQ.n-ya5nE_dGNHKo1yENbp9D_uhk5ThEFeZ2y10O6GeLo'
-
+const token = localStorage.getItem('token')
 const BookApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        postBooks: builder.mutation({
-            query: (data) => ({
-                url: '/book/create',
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: data,
-            }),
-        }),
         getBooks: builder.query({
             query: (queries) => {
                 const filteredParams = Object.fromEntries(
@@ -31,9 +18,6 @@ const BookApi = api.injectEndpoints({
                 };
             },
         }),
-
-
-
         getBookById: builder.query({
             query: (id) => ({
                 url: `/book/${id}`,
@@ -41,6 +25,18 @@ const BookApi = api.injectEndpoints({
                     Authorization: `Bearer ${token}`,
                 },
             }),
+        }),
+        postBooks: builder.mutation({
+            query: (data) => ({
+                url: '/book/create',
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: data,
+            }),
+            invalidatesTags: ['books']
         }),
         updateBookById: builder.mutation({
             query: ({ id, data }) => ({

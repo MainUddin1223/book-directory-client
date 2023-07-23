@@ -1,5 +1,8 @@
 import BookForm from '@/components/bookForm'
 import Layout from '@/layout/Layout'
+import { usePostBooksMutation } from '@/redux/features/book/bookApi'
+import { useAppDispatch } from '@/redux/hooks'
+
 import { useState } from 'react'
 
 export type IAddBookData = {
@@ -11,6 +14,7 @@ export type IAddBookData = {
 }
 
 const AddBook = () => {
+
   const [addBookData, setAddBookData] = useState<IAddBookData>({
     title: '',
     author: '',
@@ -19,8 +23,10 @@ const AddBook = () => {
     reviews: 0,
   })
 
-  const handleAddBook = () => {
-    console.log(addBookData)
+  const [addBooks] = usePostBooksMutation()
+  const handleAddBook = async() => {
+    const response = await addBooks(addBookData);
+    console.log(response)
   }
 
   return (
