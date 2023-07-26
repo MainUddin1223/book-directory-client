@@ -15,12 +15,16 @@ import { useGetAuthQuery } from './redux/features/auth/authApi'
 
 function App() {
 const dispatch = useAppDispatch()
+const token = localStorage.getItem('token')
+
 const { auth } = useAppSelector((state) => state.auth)
 
-const { data, isLoading, error, isSuccess } = useGetAuthQuery(undefined)
+const { data, isLoading, isSuccess } = useGetAuthQuery(token)
+
 useMemo(()=>{
   if(isSuccess){
-    dispatch(setAuth({...auth,email:data.email}))
+dispatch(setAuth(data))
+
   }
 },[isSuccess])
 
@@ -28,6 +32,8 @@ useMemo(()=>{
 if (isLoading) {
   return <Loader />
 }
+
+console.log(auth, data.email, 'auth')
 
 
   return (

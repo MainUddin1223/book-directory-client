@@ -9,7 +9,8 @@ interface IProps {
 }
 
 const PrivateRoutes = ({ children }: IProps) => {
-const { auth, isLoading } = useAppSelector((state) => state.auth) //state.user
+const { auth, isLoading } = useAppSelector((state) => state.auth)
+
 
 
 const { pathname } = useLocation()

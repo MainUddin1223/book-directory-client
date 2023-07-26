@@ -13,8 +13,8 @@ type IBookData = {
 } & IAddBookData
 
 const MyBookList = () => {
-  const { data, isLoading, error } = useGetMyBooksQuery(undefined)
-  const [deleteBookById, { isLoading: isDeleteLoading, isError }] =
+  const { data, isLoading } = useGetMyBooksQuery(undefined)
+  const [deleteBookById, { isLoading: isDeleteLoading }] =
     useDeleteBookByIdMutation()
   const navigate = useNavigate()
 

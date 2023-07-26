@@ -3,7 +3,8 @@ import { IAddBookData } from './addBook'
 import Loader from '@/components/loader'
 
 const WishList = () => {
-  const { data, isLoading, error } = useGetWishListQuery(undefined)
+const { data, isLoading } = useGetWishListQuery(undefined)
+
   if (isLoading) {
     return <Loader />
   }

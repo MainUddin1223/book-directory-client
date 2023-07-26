@@ -3,7 +3,8 @@ import { IAddBookData } from './addBook'
 import Loader from '@/components/loader'
 
 const SavedList = () => {
-  const { data, isLoading, error } = useGetSavedListQuery(undefined)
+const { data, isLoading } = useGetSavedListQuery(undefined)
+
   if (isLoading) {
     return <Loader />
   }

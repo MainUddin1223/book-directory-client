@@ -53,26 +53,26 @@ export const loginApi = createAsyncThunk('/api/auth/login', async (data: ICredin
     const responseData = await response.json();
     return responseData;
 });
-export const authApi = createAsyncThunk('/api/auth', async (data: string) => {
-    const url = `${baseURL}/auth`;
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': data
-        },
-    });
-    const responseData = await response.json();
-    return responseData;
-});
+// export const authApi = createAsyncThunk('/api/auth', async (data: string) => {
+//     const url = `${baseURL}/auth`;
+//     const response = await fetch(url, {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': data
+//         },
+//     });
+//     const responseData = await response.json();
+//     return responseData;
+// });
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
         setAuth: (state, action) => {
-            state.auth.email = action.payload
-            state.auth.token = action.payload
+            state.auth.email = action.payload.email
+            state.auth.token = action.payload.token || null
         },
         setLoading: (state, action) => {
             state.isLoading = action.payload
@@ -109,20 +109,20 @@ const authSlice = createSlice({
                 state.isError = true
                 state.error = action.error.message!
             })
-            .addCase(authApi.pending, (state) => {
-                state.isLoading = true
-                state.isError = false
-                state.error = null
-            })
-            .addCase(authApi.fulfilled, (state, action) => {
-                state.auth = action.payload
-                state.isLoading = false
-            })
-            .addCase(authApi.rejected, (state, action) => {
-                state.isLoading = false
-                state.isError = true
-                state.error = action.error.message!
-            })
+            // .addCase(authApi.pending, (state) => {
+            //     state.isLoading = true
+            //     state.isError = false
+            //     state.error = null
+            // })
+            // .addCase(authApi.fulfilled, (state, action) => {
+            //     state.auth = action.payload
+            //     state.isLoading = false
+            // })
+            // .addCase(authApi.rejected, (state, action) => {
+            //     state.isLoading = false
+            //     state.isError = true
+            //     state.error = action.error.message!
+            // })
     }
 })
 export const { setAuth, setLoading } = authSlice.actions

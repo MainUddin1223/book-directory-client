@@ -1,6 +1,6 @@
 import { api } from "@/redux/api/apiSlice";
-const token = localStorage.getItem('token')
 
+const token = localStorage.getItem('token')
 const authApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAuth: builder.query({

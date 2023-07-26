@@ -9,8 +9,10 @@ import Loader from './loader'
 
 
 const BookList = () => {
-const { data, isLoading, error } = useGetBooksQuery({ page: 1 })
-const [addToSavedList,{isLoading:isSavedLoading,error:savedError,isSuccess}] = useAddToSavedListMutation()
+const { data, isLoading } = useGetBooksQuery({ page: 1 })
+const [addToSavedList, { isLoading: isSavedLoading, error: savedError }] =
+  useAddToSavedListMutation()
+
 const [addToWishList,{isLoading:isWishLoading,error:wishError}] = useAddtoWishListMutation()
 const navigate = useNavigate()
 
