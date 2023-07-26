@@ -5,20 +5,18 @@ import { MdOutlineLogout } from 'react-icons/md'
 import { useDispatch } from 'react-redux'
 import { setAuth } from '@/redux/features/auth/authSlice'
 
-
-
 const Header = () => {
 const [isMenuOpen, setIsMenuOpen] = useState(false)
 const { auth } = useAppSelector((state) => state.auth)
 const dispatch = useDispatch()
 const navigate = useNavigate()
 
+
 const handleLogout = () => {
   dispatch(setAuth(''))
   localStorage.clear()
   navigate('/')
 }
-
 
 
   const toggleMenu = () => {
@@ -39,10 +37,14 @@ const handleLogout = () => {
             {auth.email ? (
               <>
                 <Link to="/add-book">Add a book</Link>
-                <Link to="/">Wish List</Link>
-                <Link to="/">Reading</Link>
-                <div onClick={handleLogout} className=' bg-gray-400 p-2 rounded-full cursor-pointer'><MdOutlineLogout className="text-2xl" />
+                <Link to="/wish-list">Wish List</Link><Link to="/my-books">My Books</Link>
 
+                <Link to="/saved-list">Reading</Link>
+                <div
+                  onClick={handleLogout}
+                  className=" bg-gray-400 p-2 rounded-full cursor-pointer"
+                >
+                  <MdOutlineLogout className="text-2xl" />
                 </div>
               </>
             ) : (
@@ -58,9 +60,16 @@ const handleLogout = () => {
             <Link to="/">Home</Link>
 
             {auth.email ? (
-              <div>
-                <Link to="/">Add a book</Link>
-                <div onClick={handleLogout} className=' bg-gray-400 p-2 rounded-full cursor-pointer'><MdOutlineLogout className="text-2xl" />
+              <div className='flex flex-col gap-2'>
+            <Link to="/add-book">Add a book</Link>
+                <Link to="/wish-list">Wish List</Link><Link to="/my-books">My Books</Link>
+
+                <Link to="/saved-list">Reading</Link>
+                <div
+                  onClick={handleLogout}
+                  className=" bg-gray-400 p-2 rounded-full cursor-pointer"
+                >
+                  <MdOutlineLogout className="text-2xl" />
                 </div>
               </div>
             ) : (

@@ -11,12 +11,17 @@ interface IProps {
 const PrivateRoutes = ({ children }: IProps) => {
 const { auth, isLoading } = useAppSelector((state) => state.auth) //state.user
 
-  const { pathname } = useLocation()
 
-  if (isLoading) {
-return <Loader />
+const { pathname } = useLocation()
 
-  }
+
+
+
+if(isLoading){
+  return <Loader/>
+}
+console.log(auth, isLoading)
+
   if (!auth.email) {
     return <Navigate to="/login" state={{ path: pathname }} />
   }

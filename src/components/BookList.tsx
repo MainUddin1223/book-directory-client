@@ -1,15 +1,68 @@
-import { useGetBooksQuery } from '@/redux/features/book/bookApi'
+import {
+  useAddToSavedListMutation,
+  useAddtoWishListMutation,
+  useGetBooksQuery,
+} from '@/redux/features/book/bookApi'
+import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import Loader from './loader'
+
 
 const BookList = () => {
 const { data, isLoading, error } = useGetBooksQuery({ page: 1 })
-if (isLoading) {
-  console.log('data is comming')
+const [addToSavedList,{isLoading:isSavedLoading,error:savedError,isSuccess}] = useAddToSavedListMutation()
+const [addToWishList,{isLoading:isWishLoading,error:wishError}] = useAddtoWishListMutation()
+const navigate = useNavigate()
+
+if (isLoading || isSavedLoading || isWishLoading) {
+ return <Loader/>
 }
-console.log(data, error)
+const handleAddToSavedList = async (id: string) => {
+  const response = await addToSavedList(id)
+  if (!isSavedLoading) {
+    if (savedError) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Something went wrong',
+      })
+    }
+    if (response) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Successfully saved',
+        showConfirmButton: false,
+        timer: 1500,
+      })
+      navigate('/saved-list')
+    }
+  }
+}
+const handleAddToWishList = async (id: string) => {
+  const response = await addToWishList(id)
+ 
+  if (!isWishLoading) {
+    if (wishError) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Something went wrong',
+      })
+    }
+    if (response) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Successfully add to wish list',
+        showConfirmButton: false,
+        timer: 1500,
+      })
+      navigate('/wish-list')
+    }
+  }
+}
 
   return (
     <>
-      <div className="relative mx-auto w-full max-w-sm pt-6 bg-slate-400 p-2 rounded-md">
+    <h1 className='text-5xl uppercase font-bold text-heading-color py-8'>Recently added</h1>
+      {/* <div className="relative mx-auto w-full max-w-sm pt-6 bg-slate-400 p-2 rounded-md">
         <a
           href="#"
           className="relative inline-block w-full transform transition-transform duration-300 ease-in-out"
@@ -103,6 +156,20 @@ console.log(data, error)
             </div>
           </div>
         </a>
+      </div> */}
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2'>
+        {
+          data?.data?.length>0 && data?.data.map((book:any)=>(
+            <div className='font-semibold text-white bg-secondary p-4 flex-1 '>
+              <h1 className='uppercase'>Book Title : {book.title}</h1>
+              <h1 className='uppercase'>Author: {book.author}</h1>
+              <h1 className='uppercase'>Genre:{book.genre}</h1>
+              <h1>{book.publicationDate }</h1>
+              <button className='bg-primary px-4 py-2 rounded m-2' onClick={()=>handleAddToSavedList(book._id)}>Mark as read</button>
+              <button className='bg-primary px-4 py-2 rounded m-2' onClick={()=>handleAddToWishList(book._id)}>Add to wish</button>
+            </div>
+          ))
+        }
       </div>
     </>
   )

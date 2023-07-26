@@ -1,9 +1,14 @@
 import BookForm from '@/components/bookForm'
+import Loader from '@/components/loader'
+
 import Layout from '@/layout/Layout'
 import { usePostBooksMutation } from '@/redux/features/book/bookApi'
-import { useAppDispatch } from '@/redux/hooks'
+
 
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+
 
 export type IAddBookData = {
   title: string
@@ -14,6 +19,8 @@ export type IAddBookData = {
 }
 
 const AddBook = () => {
+const navigate = useNavigate()
+
 
   const [addBookData, setAddBookData] = useState<IAddBookData>({
     title: '',
@@ -23,14 +30,32 @@ const AddBook = () => {
     reviews: 0,
   })
 
-  const [addBooks] = usePostBooksMutation()
-  const handleAddBook = async() => {
-    const response = await addBooks(addBookData);
-    console.log(response)
-  }
+const [addBooks, { isLoading, isError }] = usePostBooksMutation()
 
+  const handleAddBook = async() => {
+    const response:any = await addBooks(addBookData);
+    if (!isLoading) {
+      if (response?.data?.success == false || isError) {
+        Swal.fire({
+          icon: 'error',
+          title: "Filed to add you book",
+        })
+      }
+      if (response?.data) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Bok added successfully',
+          showConfirmButton: false,
+          timer: 1500,
+        })
+        navigate('/')
+      }
+    }
+  }
+if(isLoading){
+  return <Loader/>
+}
   return (
-    <Layout>
       <div className="bg-primary py-8">
         <div className="p-8 lg:w-1/2 mx-auto bg-secondary  rounded shadow-md">
           <h1 className="text-2xl font-semibold text-center ml-4 uppercase mb-4 text-white">
@@ -45,7 +70,6 @@ const AddBook = () => {
           </button>
         </div>
       </div>
-    </Layout>
   )
 }
 export default AddBook

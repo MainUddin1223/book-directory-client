@@ -1,12 +1,16 @@
 import { api } from "@/redux/api/apiSlice";
+const token = localStorage.getItem('token')
 
 const authApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        login: builder.mutation({
-            query: ({ data }) => ({
-                url: `/login`,
-                method: 'POST',
-                body: data
+        getAuth: builder.query({
+            query: () => ({
+                url: `/auth`,
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `${token}`,
+                },
 
             })
         }),
@@ -20,4 +24,4 @@ const authApi = api.injectEndpoints({
         })
     })
 })
-export const { useLoginMutation, useSignupMutation } = authApi
+export const { useGetAuthQuery, useSignupMutation } = authApi

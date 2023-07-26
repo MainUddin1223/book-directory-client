@@ -1,23 +1,29 @@
 
 import './App.css'
 import Layout from '@/layout/Layout'
-import Home from '@/pages/Home'
-import { useEffect } from 'react'
+import { useMemo } from 'react'
+
 import { useAppDispatch, useAppSelector } from './redux/hooks'
-import { authApi } from './redux/features/auth/authSlice'
+import { setAuth } from './redux/features/auth/authSlice'
+
 import Loader from './components/loader'
+import { Outlet } from 'react-router-dom'
+import { useGetAuthQuery } from './redux/features/auth/authApi'
+
 
 
 
 function App() {
 const dispatch = useAppDispatch()
-const { isLoading } = useAppSelector((state) => state.auth)
-const token = localStorage.getItem('token')
-useEffect(() => {
-  if (token) {
-    dispatch(authApi(token))
+const { auth } = useAppSelector((state) => state.auth)
+
+const { data, isLoading, error, isSuccess } = useGetAuthQuery(undefined)
+useMemo(()=>{
+  if(isSuccess){
+    dispatch(setAuth({...auth,email:data.email}))
   }
-}, [])
+},[isSuccess])
+
 
 if (isLoading) {
   return <Loader />
@@ -28,8 +34,8 @@ if (isLoading) {
     <>
  <div className='bg-primary'>
  <Layout>
-      <div className='lg:w-3/4 md:w-11/12 mx-auto'>
-      <Home />
+      <div className='lg:w-3/4 md:w-11/12 mx-auto'><Outlet />
+
       </div>
 </Layout>
  </div>
