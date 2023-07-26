@@ -25,7 +25,7 @@ const navigate = useNavigate()
     title: '',
     author: '',
     genre: '',
-    publicationDate: '',
+    publicationDate:new Date().toISOString().slice(0, 10),
     reviews: 0,
   })
 
