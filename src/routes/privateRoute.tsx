@@ -10,6 +10,7 @@ interface IProps {
 
 const PrivateRoutes = ({ children }: IProps) => {
 const { auth, isLoading } = useAppSelector((state) => state.auth)
+console.log('--------------', auth)
 
 
 
