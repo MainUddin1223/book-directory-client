@@ -33,7 +33,6 @@ if (isLoading) {
   return <Loader />
 }
 
-console.log(auth, data.email, 'auth')
 
 
   return (
